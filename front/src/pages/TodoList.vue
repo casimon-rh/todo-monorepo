@@ -5,15 +5,14 @@
       v-container
         v-list(shaped)
           template(v-for='(item) in items')
-            TodoItem(:item='item.name' :active='item.active' :i='item.id')
+            TodoItem(:item='item.description' :done='item.done' :i='item.id')
     v-card-actions
       v-spacer
       v-dialog(v-model='dialog' persistent max-width='600px')
         template(v-slot:activator='{ on, attrs }')
           v-btn(dark text color='primary' v-bind='attrs' v-on='on') New
         v-card
-          v-card-title
-            span.text-h5 Todo Item
+          v-card-title Todo Item
           v-card-text
             v-container
               v-text-field(label='Description' required v-model='text')
@@ -30,26 +29,41 @@ import TodoItem from '../components/TodoItem.vue'
 export default Vue.extend({
   name: 'TodoList',
   components: { TodoItem },
-  data: () => ({
-    dialog: false,
-    text: '',
-    items: [
-      { name: 'Dog Photos', active: true, id: 1 },
-      { name: 'Cat Photos', active: false, id: 2 },
-      { name: 'Potatoes', active: false, id: 3 },
-      { name: 'Carrots', active: false, id: 4 }
-    ]
-  }),
+  mounted () {
+    this.$store.dispatch('getItems')
+  },
+  computed: {
+    items: {
+      get () {
+        return this.$store.state.items
+      },
+      set (newitems) {
+        this.$store.state.items = newitems
+      }
+    },
+    text: {
+      get () {
+        return this.$store.state.text
+      },
+      set (newtext) {
+        this.$store.state.text = newtext
+      }
+    },
+    dialog: {
+      get () {
+        return this.$store.state.dialog
+      },
+      set (newdialog) {
+        this.$store.state.dialog = newdialog
+      }
+    }
+  },
   methods: {
     saveItem () {
-      // eslint-disable-next-line
-      console.info(this.text)
-      this.dialog = false
-      this.text = ''
+      this.$store.dispatch('createItem', this.text)
     },
     cancelItem () {
-      this.dialog = false
-      this.text = ''
+      this.$store.commit('HIDE_DIALOG')
     }
   }
 })
