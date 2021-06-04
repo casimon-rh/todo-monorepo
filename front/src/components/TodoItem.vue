@@ -2,7 +2,6 @@
   v-list-item(:key='`item-${i}`' :value='item')
     v-list-item-content
       v-list-item-title(v-text='item')
-    // @change(toggleMarkItem(i, done))
     v-checkbox(color='primary accent-4' :input-value='done' @click="toggleMarkItem(i, done)")
     v-dialog(v-model='confirm' persistent max-width='600px')
       template(v-slot:activator='{ on, attrs }')

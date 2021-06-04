@@ -3,9 +3,10 @@
     v-card-title List
     v-card-text
       v-container
-        v-list(shaped)
+        v-list(shaped v-if='items.length')
           template(v-for='(item) in items')
             TodoItem(:item='item.description' :done='item.done' :i='item.id')
+        span(v-else) No Items
     v-card-actions
       v-spacer
       v-dialog(v-model='dialog' persistent max-width='600px')
@@ -20,7 +21,6 @@
             v-spacer
             v-btn(dark text color='error' @click='cancelItem') Cancel
             v-btn(dark text color='primary' @click='saveItem') Save
-
 </template>
 
 <script lang='ts'>
